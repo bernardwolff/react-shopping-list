@@ -25,13 +25,7 @@ class ShoppingList extends Component {
     });
   }
   boughtEmAll() {
-    var ret = true;
-    // TODO: use reduce
-    this.state.items.forEach(function(item) {
-      ret = ret && item.bought;
-    });
-    console.log(ret);
-    return ret;
+    return this.state.items.reduce((acum, cur) => acum && cur.bought, true);
   }
   render() {
     var items = [];
