@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ListItem from './ListItem.js';
+import ItemEntry from './ItemEntry.js';
 
 class ShoppingList extends Component {
   constructor(props) {
@@ -16,6 +17,13 @@ class ShoppingList extends Component {
       })
     });
   }
+  handleItemEntry(itemName) {
+    var newItems = this.state.items.slice();
+    newItems.push({name: itemName, bought: false});
+    this.setState({
+      items: newItems
+    });
+  }
   boughtEmAll() {
     var ret = true;
     // TODO: use reduce
@@ -30,7 +38,11 @@ class ShoppingList extends Component {
     this.state.items.forEach((item) => {
       items.push(<ListItem name={item.name} bought={item.bought} key={item.name} onUserInput={this.handleUserInput.bind(this)} />);
     });
-    return (<div><ul>{items}</ul><div>{"Bought 'Em All: " + this.boughtEmAll()}</div></div>);
+    return (<div>
+              <ItemEntry onItemEntry={this.handleItemEntry.bind(this)} />
+              <ul>{items}</ul>
+              <div>{"Bought 'Em All: " + this.boughtEmAll()}</div>
+            </div>);
   }
 }
 
