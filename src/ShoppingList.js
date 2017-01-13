@@ -2,12 +2,35 @@ import React, { Component } from 'react';
 import ListItem from './ListItem.js';
 
 class ShoppingList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: props.items.map((item) => {return {name: item.name, bought: item.bought}})
+    }
+  }
+  handleUserInput(itemName, bought) {
+    this.setState({
+      items: this.state.items.map((item) => {
+        var b = item.name === itemName ? bought : item.bought;
+        return {name: item.name, bought: b};
+      })
+    });
+  }
+  boughtEmAll() {
+    var ret = true;
+    // TODO: use reduce
+    this.state.items.forEach(function(item) {
+      ret = ret && item.bought;
+    });
+    console.log(ret);
+    return ret;
+  }
   render() {
     var items = [];
-    this.props.items.forEach((item) => {
-      items.push(<ListItem name={item.name} bought={item.bought} key={item.name} />);
+    this.state.items.forEach((item) => {
+      items.push(<ListItem name={item.name} bought={item.bought} key={item.name} onUserInput={this.handleUserInput.bind(this)} />);
     });
-    return (<ul>{items}</ul>);
+    return (<div><ul>{items}</ul><div>{"Bought 'Em All: " + this.boughtEmAll()}</div></div>);
   }
 }
 
